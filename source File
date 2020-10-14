@@ -1,0 +1,201 @@
+
+
+import 'flutter/src/Widgets/text.dart';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Calculator',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+       primarySwatch: Colors.teal,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home:
+      Scaffold(
+    appBar: AppBar(
+    title: Text('Calculator'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.build,
+            color: Colors.white,
+
+          ),
+         
+          } ,
+
+        )
+      ],
+
+    ),
+      body: MyHomePage(),
+      ),
+    );
+
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+ class _MyHomePageState extends State<MyHomePage> {
+   String outPut = "0";
+   String _outPut = "0";
+   double num1 = 0.0;
+   double num2 = 0;
+   String Oper = "";
+
+   buttonPressed(String Btext) {
+     if (Btext == "clear") {
+       _outPut = "0";
+       num1 = 0.0;
+       num2 = 0.0;
+       Oper = "";
+     } else if (Btext == "+" || Btext == "-" || Btext == "X" || Btext == "/") {
+       num1 = double.parse( outPut );
+       Oper = Btext;
+       _outPut = "0";
+     } else if (Btext == ".") {
+       if (_outPut.contains( "." )) {
+         print( "Already contains a decimals" );
+         return;
+       } else {
+         _outPut = _outPut + Btext;
+       }
+     } else if (Btext == "=") {
+       num2 = double.parse( outPut );
+       if (Oper == "+") {
+         _outPut = (num1 + num2).toString( );
+       }
+       if (Oper == "X") {
+         _outPut = (num1 * num2).toString( );
+       }
+       if (Oper == "-") {
+         _outPut = (num1 - num2).toString( );
+       }
+       if (Oper == "/") {
+         _outPut = (num1 / num2).toString( );
+       }
+       num1 = 0.0;
+       num2 = 0.0;
+       Oper = "";
+     }
+     else {
+       _outPut = _outPut + Btext;
+     }
+     print( _outPut );
+     setState( () {
+       outPut = double.parse( _outPut ).toStringAsFixed(1);
+     } );
+   }
+
+
+   Widget CreateButton(String Btext) {
+     return new Expanded(
+       child: new MaterialButton(
+           onPressed: () =>{
+             buttonPressed(Btext),
+           },
+         padding: new EdgeInsets.all( 20.0 ),
+         child: new Text( Btext,
+         style: TextStyle(
+           fontSize: 30.0,
+           fontWeight: FontWeight.bold,
+         ), ),
+
+         color: Colors.black45,
+         textColor: Colors.white,
+       ),
+     );
+   }
+
+   @override
+   Widget build(BuildContext context) {
+
+     return new Scaffold(
+       appBar: new AppBar(
+
+       ),
+       body: new Container(
+         child: new Column( children: <Widget>[
+           new Container(
+             alignment: Alignment.centerRight,
+             padding: new EdgeInsets.symmetric(
+               vertical: 24.0,
+               horizontal: 12.0,
+             ),
+
+             child: new Text( outPut, style: new TextStyle(
+               fontSize: 40.0,
+               fontWeight: FontWeight.bold,
+             ),
+             ),
+           ),
+           new Expanded(
+             child: new Divider( ),
+           ),
+
+           new Column(
+             children: <Widget>[
+               new Row( children: [
+                 CreateButton( "7" ),
+                 CreateButton( "8" ),
+                 CreateButton( "9" ),
+                 CreateButton( "/" ),
+               ] ),
+               new Row( children: [
+                 CreateButton( "4" ),
+                 CreateButton( "5" ),
+                 CreateButton( "6" ),
+                 CreateButton( "X" ),
+               ] ),
+               new Row( children: [
+                 CreateButton( "1" ),
+                 CreateButton( "2" ),
+                 CreateButton( "3" ),
+                 CreateButton( "-" ),
+               ] ),
+               new Row( children: [
+                 CreateButton( "." ),
+                 CreateButton( "0" ),
+                 CreateButton( "00" ),
+                 CreateButton( "+" ),
+               ] ),
+               new Row( children: [
+                 CreateButton( "clear" ),
+                 CreateButton( "=" ),
+
+               ] ),
+             ],
+           ),
+
+
+         ],
+         ),
+       ),
+     );
+   }
+
+
+ }
+
+
+
+
+
+
+
